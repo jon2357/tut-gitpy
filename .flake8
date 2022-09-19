@@ -1,0 +1,9 @@
+[flake8]
+# Black's line length is set to 88
+max-line-length = 88
+# E203 whitespace before ':' (Black enforses equal amount of whitespace around slice operators)
+extend-ignore = E203
+# McCabe complexity
+max-complexity = 10
+# Exclude files and folders from flake8 review
+exclude = env,.git,__pycache__,docs/source/conf.py,old,build,dist,.vscode,.gitignore,.gitkeep,LICENSE,README.md,.pytest_cache

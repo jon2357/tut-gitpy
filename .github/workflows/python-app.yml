@@ -54,7 +54,7 @@ jobs:
     #run pytest wit the coverage reports (create coverage report, and test outputs in xml, html, json), fail if code coverage is less than 80
     - name: Test with pytest
       run: |
-         pytest -v --cov --doctest-modules --cov-fail-under=80 --cov-report term-missing --cov-report html:.reports/pytest-cov_html-py${{ matrix.python-version }} --cov-report xml:.reports/pytest-cov-py${{ matrix.python-version }}.xml--json-report --json-report-file=.reports/pytest-results-py${{ matrix.python-version }}.json --junitxml=.reports/pytest-junit-py${{ matrix.python-version }}.xml
+         pytest -v --cov --doctest-modules --cov-fail-under=80 --cov-report term-missing --cov-report html:.reports/pytest-cov_html-py${{ matrix.python-version }} --cov-report xml:.reports/pytest-cov-py${{ matrix.python-version }}.xml --json-report --json-report-file=.reports/pytest-results-py${{ matrix.python-version }}.json --junitxml=.reports/pytest-junit-py${{ matrix.python-version }}.xml
          
     #Save the results as an artifact (all reports and files created under the .reports dir)
     - name: Upload pytest test results

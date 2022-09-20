@@ -1,0 +1,73 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python application
+
+on:
+  push:
+    branches: 
+      - main
+      - 'production'
+      - 'features/**'
+  pull_request:
+    branches:
+      - main
+      - 'production'
+      - 'features/**'    
+  workflow_dispatch:
+  
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10"]
+        
+    steps:
+    # You can test your matrix by printing the current Python version
+    - uses: actions/checkout@v3
+    
+    - name: Setup Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4.2.0
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+     # You can test your matrix by printing the current Python version
+    - name: Display Python version
+      run: python -c "import sys; print(sys.version)"
+    
+    # Install dependencies (E.g. the dev requirements and the normal requirements)
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest pytest-cov pytest-json-report
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        
+    #Run flake8 linting twice, once for syntax errors & undefined names, then another for me general issues
+    - name: Lint with flake8
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --output-file=.reports/flake8-syntax-py${{ matrix.python-version }}.txt
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics --output-file=.reports/flake8-py-${{ matrix.python-version }}.txt
+        
+    #run pytest wit the coverage reports (create coverage report, and test outputs in xml, html, json), fail if code coverage is less than 80
+    - name: Test with pytest
+      run: |
+         pytest -v --cov --doctest-modules --cov-fail-under=80 --cov-report term-missing --cov-report html:.reports/pytest-cov_html-py${{ matrix.python-version }} --cov-report xml:.reports/pytest-cov-py${{ matrix.python-version }}.xml --json-report --json-report-file=.reports/pytest-results-py${{ matrix.python-version }}.json --junitxml=.reports/pytest-junit-py${{ matrix.python-version }}.xml
+         
+    #Save the results as an artifact (all reports and files created under the .reports dir)
+    - name: Upload pytest test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: workflow-results-py${{ matrix.python-version }}
+        path: .reports
+      
+      # Use always() to always run this step to publish test results when there are test failures
+      if: ${{ always() }}

@@ -7,13 +7,11 @@ on:
   push:
     branches: 
       - main
-      - 'production'
-      - 'features/**'
+      - production
   pull_request:
     branches:
       - main
-      - 'production'
-      - 'features/**'    
+      - production
   workflow_dispatch:
   
 

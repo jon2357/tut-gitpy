@@ -13,4 +13,4 @@ count = True
 # statistics = True
 
 # Exclude files and folders from flake8 review
-exclude = env,.git,__pycache__,docs/source/conf.py,old,build,dist,.vscode,.gitignore,.gitkeep,LICENSE,README.md,.pytest_cache,.reports
+exclude = env,.git,__pycache__,old,build,dist,.vscode,.gitignore,.gitkeep,LICENSE,README.md,.pytest_cache,.reports

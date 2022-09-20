@@ -1,0 +1,16 @@
+[flake8]
+# Black's line length is set to 88
+max-line-length = 88
+# E203 whitespace before ':' (Black enforses equal amount of whitespace around slice operators)
+extend-ignore = E203
+# McCabe complexity
+max-complexity = 10
+# Print the total number of errors.
+count = True
+# Print the source code generating the error/warning in question.
+# show-source = True
+# Count the number of occurrences of each error/warning code and print a report.
+# statistics = True
+
+# Exclude files and folders from flake8 review
+exclude = env,.git,__pycache__,docs/source/conf.py,old,build,dist,.vscode,.gitignore,.gitkeep,LICENSE,README.md,.pytest_cache,.reports

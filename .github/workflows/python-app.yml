@@ -5,9 +5,15 @@ name: Python application
 
 on:
   push:
-    branches: [ $default-branch ]
+    branches: 
+      - main
+      - 'production'
+      - 'features/**'
   pull_request:
-    branches: [ $default-branch ]
+    branches:
+      - main
+      - 'production'
+      - 'features/**'    
   workflow_dispatch:
   
 
